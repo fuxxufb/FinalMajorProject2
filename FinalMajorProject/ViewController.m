@@ -7,23 +7,33 @@
 //
 
 #import "ViewController.h"
-
+#import "HTTPServer.h"
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+#import "MyHTTPConnection.h"
+#import "SJXCSMIPHelper.h"
+#import "DefaultInstance.h"
 @interface ViewController ()
+{
+    HTTPServer *httpServer;
+    NSMutableArray *filenameArray;
+    NSInteger *AudioNumber;
+    NSString *filename;
+    NSURL *fileURL;
+}
+
 
 @end
-
+NSInteger mp3Number;
 @implementation ViewController
 
+#pragma mark - setup
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    //[self setupNotifications];
+    filenameArray=[DefaultInstance sharedInstance].filenameArray;
+    AudioNumber=[DefaultInstance sharedInstance].audioNumber;
+    filename=filenameArray[(int)AudioNumber];
+    fileURL=[DefaultInstance sharedInstance].filepathArray[(int)AudioNumber];
 }
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 @end
