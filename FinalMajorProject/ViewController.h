@@ -23,13 +23,24 @@
 #pragma mark - Properties
 @property (nonatomic, strong) EZAudioFile *audioFile;
 @property (nonatomic, strong) EZAudioPlayer *player;
-@property (weak, nonatomic) IBOutlet EZAudioPlot *audioPlot;
+@property (strong, nonatomic) NSMutableArray *mp3Array;
+@property (strong, nonatomic) IBOutlet EZAudioPlot *audioPlot;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *Playcontroller;
+- (IBAction)PlayController:(UITapGestureRecognizer *)sender;
+@property (strong, nonatomic) IBOutlet UILabel *currentTime;
+@property (strong, nonatomic) IBOutlet UILabel *During;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *setPlayMode;
+- (IBAction)setPlayMode:(UITapGestureRecognizer *)sender;
+
+
+
+/*@property (weak, nonatomic) IBOutlet EZAudioPlot *audioPlot;
 @property (weak, nonatomic) IBOutlet UITapGestureRecognizer *PlayController;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *setPlayMode;
 @property (weak, nonatomic) IBOutlet UILabel *Name;
 @property (weak, nonatomic) IBOutlet UILabel *currentTime;
 @property (weak, nonatomic) IBOutlet UILabel *During;
-@property (strong, nonatomic) NSMutableArray *mp3Array;
+
 @property (strong, nonatomic) IBOutlet UIButton *changeViews;
 @property (strong,nonatomic) AVAudioPlayer *SPlayer;
 //@property (assign,nonatomic) NSMutableArray* musicArray;
@@ -46,7 +57,7 @@
 - (IBAction)LongPress:(UILongPressGestureRecognizer *)sender;
 - (IBAction)changeViews:(UIButton *)sender;
 - (IBAction)selectMusic:(UIButton *)sender;
-- (IBAction)ChangeView:(UIBarButtonItem *)sender;
+- (IBAction)ChangeView:(UIBarButtonItem *)sender;*/
 
 @end
 

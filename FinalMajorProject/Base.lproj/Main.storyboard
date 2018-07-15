@@ -207,8 +207,8 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="l75-JU-SII" appends="YES" id="EVH-Eq-qS4"/>
-                                    <outletCollection property="gestureRecognizers" destination="tBq-Dr-0br" appends="YES" id="YHx-fe-z4V"/>
                                     <outletCollection property="gestureRecognizers" destination="NLH-TP-5z3" appends="YES" id="Hmv-ON-lzv"/>
+                                    <outletCollection property="gestureRecognizers" destination="tBq-Dr-0br" appends="YES" id="9Gj-Yi-nqF"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -222,22 +222,22 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="During" destination="JYy-8F-Abt" id="baZ-Q9-CgY"/>
-                        <outlet property="PlayController" destination="tBq-Dr-0br" id="XOX-8A-TAC"/>
-                        <outlet property="audioPlot" destination="awX-DM-Lkm" id="8w5-Cf-SA0"/>
-                        <outlet property="currentTime" destination="FJq-Dp-4fc" id="Jtm-gc-da2"/>
-                        <outlet property="setPlayMode" destination="l75-JU-SII" id="D9T-zp-8Cc"/>
+                        <outlet property="During" destination="JYy-8F-Abt" id="Hbh-9p-lWn"/>
+                        <outlet property="Playcontroller" destination="tBq-Dr-0br" id="wwS-3O-cA2"/>
+                        <outlet property="audioPlot" destination="awX-DM-Lkm" id="eDG-ag-643"/>
+                        <outlet property="currentTime" destination="FJq-Dp-4fc" id="7vq-dz-l9s"/>
+                        <outlet property="setPlayMode" destination="l75-JU-SII" id="Poe-oS-uUY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0VQ-5A-0C0" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="tBq-Dr-0br" userLabel="PlayController">
                     <connections>
-                        <action selector="PlayController:" destination="BTK-hg-PDf" id="WPz-2p-ez2"/>
+                        <action selector="PlayController:" destination="BTK-hg-PDf" id="L3Y-5o-zfQ"/>
                     </connections>
                 </tapGestureRecognizer>
                 <tapGestureRecognizer numberOfTapsRequired="2" id="l75-JU-SII" userLabel="setPlayMode">
                     <connections>
-                        <action selector="setPlayMode:" destination="BTK-hg-PDf" id="suC-eX-Vlo"/>
+                        <action selector="setPlayMode:" destination="BTK-hg-PDf" id="kGl-Cg-mOs"/>
                     </connections>
                 </tapGestureRecognizer>
                 <swipeGestureRecognizer direction="right" id="NLH-TP-5z3" userLabel="RightSwipe">

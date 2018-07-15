@@ -46,6 +46,7 @@ NSInteger mp3Count;
     musicNames=[[NSMutableArray alloc]init];
     musicPaths=[[NSMutableArray alloc]init];
     self.player=[[EZAudioPlayer alloc]init];
+    self.player = [EZAudioPlayer audioPlayerWithDelegate:self];
     musicNames=[NSMutableArray arrayWithArray:[DefaultInstance sharedInstance].filenameArray];
     musicPaths=[NSMutableArray arrayWithArray:[DefaultInstance sharedInstance].filepathArray];
     mp3Number=[DefaultInstance sharedInstance].audioNumber;
@@ -79,9 +80,9 @@ NSInteger mp3Count;
     
     //---------------------
     
-    self.player = [EZAudioPlayer audioPlayerWithDelegate:self];
     self.player.shouldLoop = NO;
     self.player.volume=0.5;
+    [self.player play];
     //-------------------------------
     
     [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
@@ -96,16 +97,12 @@ NSInteger mp3Count;
     
     //--------------------   Gestures set
     
-    [self.PlayController requireGestureRecognizerToFail:self.setPlayMode];
+    [self.Playcontroller requireGestureRecognizerToFail:self.setPlayMode];
     
     //---------------------- Labers set
     self.currentTime.text=@"00:00";
     
     //-----------------------------------SPlayer
-    self.SPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:musicPaths[mp3Number]] error:nil];
-    self.SPlayer.numberOfLoops=0;
-    self.SPlayer.delegate=self;
-    [self.SPlayer prepareToPlay];
     //---------------------------------------------
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -162,7 +159,7 @@ NSInteger mp3Count;
 #pragma mark - OpenFilePath
 - (void)openFileWithFilePathURL:(NSURL*)filePathURL
 {
-    self.Name.text=filePathURL.lastPathComponent;
+    //self.Name.text=filePathURL.lastPathComponent;
     self.navigationItem.title=filePathURL.lastPathComponent;
     self.audioFile=nil;
     self.audioFile=[EZAudioFile audioFileWithURL:filePathURL];
@@ -182,6 +179,7 @@ NSInteger mp3Count;
      }];
     //----------------------------
     [self.player setAudioFile:self.audioFile];
+    [self.player play];
 }
 
 -(void)getMusiclist
@@ -428,14 +426,14 @@ NSInteger mp3Count;
     }
 }
 
-- (IBAction)selectMusic:(UIButton *)sender {
+/*- (IBAction)selectMusic:(UIButton *)sender {
     self.picker = [[MPMediaPickerController alloc]initWithMediaTypes:MPMediaTypeAnyAudio];
     self.picker.prompt = @"Please select your music";
     self.picker.showsCloudItems = NO;
     self.picker.allowsPickingMultipleItems =YES;
     self.picker.delegate=self;
     [self presentViewController:self.picker animated:YES completion:nil];
-}
+}*/
 
 - (IBAction)ChangeView:(UIBarButtonItem *)sender {
     [self.player pause];
@@ -503,6 +501,7 @@ NSInteger mp3Count;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end
 
