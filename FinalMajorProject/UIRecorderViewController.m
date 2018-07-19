@@ -34,4 +34,8 @@
 }
 */
 
+- (IBAction)UIRecordStartButtonClick:(UIButton *)sender {
+}
+- (IBAction)UIRecordStopButtonClick:(UIButton *)sender {
+}
 @end

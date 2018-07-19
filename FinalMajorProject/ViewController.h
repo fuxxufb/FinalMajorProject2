@@ -31,6 +31,22 @@
 @property (strong, nonatomic) IBOutlet UILabel *During;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *setPlayMode;
 - (IBAction)setPlayMode:(UITapGestureRecognizer *)sender;
+@property (strong, nonatomic) IBOutlet UISlider *UIPositionSlider;
+- (IBAction)UIPositionSliderValueChange:(UISlider *)sender;
+@property (strong, nonatomic) IBOutlet UILabel *UIVolumeLabel;
+@property (strong, nonatomic) IBOutlet UISlider *UIVolumeSlider;
+- (IBAction)UIVolumeSliderChange:(UISlider *)sender;
+@property (strong, nonatomic) IBOutlet UILabel *UIPanLabel;
+@property (strong, nonatomic) IBOutlet UISlider *UIPanSlider;
+- (IBAction)UIPanSliderChange:(UISlider *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *UILoopButton;
+- (IBAction)UILoopButtonClick:(UIButton *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *UIPlayButton;
+- (IBAction)UIPlayButtonClick:(UIButton *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *UINextButton;
+- (IBAction)UINextButtonClick:(UIButton *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *UIPreButton;
+- (IBAction)UIPreButtonClick:(UIButton *)sender;
 
 
 
