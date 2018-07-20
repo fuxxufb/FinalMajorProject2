@@ -146,6 +146,7 @@ NSString *ipString;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
+    //int t=indexPath.row;
     [DefaultInstance sharedInstance].audioNumber=indexPath.row;
     //NSLog(@"%d",[DefaultInstance sharedInstance].audioNumber);
 }
