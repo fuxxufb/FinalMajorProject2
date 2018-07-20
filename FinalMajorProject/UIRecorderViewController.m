@@ -171,7 +171,12 @@
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableView" object:nil];
                                    }];
         [Alert addAction:saveaction];
-        UIAlertAction *cancelaction=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancelaction=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action)
+                                     {
+                                         self.EZRecorder=[EZRecorder recorderWithURL:[self testFilePathURL] clientFormat:[self.microphone audioStreamBasicDescription] fileType:EZRecorderFileTypeM4A delegate:self];
+                                         self.RecordCurrentTimeLabel.text=@"00:00";
+                                         [self.EZRecordPlot clear];
+                                     }];
         [Alert addAction:cancelaction];
         saveaction.enabled=false;
         self.OKAction=saveaction;
