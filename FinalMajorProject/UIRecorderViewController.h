@@ -26,5 +26,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *microphoneStateLabel;
 @property (strong, nonatomic) IBOutlet UITableView *UIRecordFileTableView;
 @property(strong,nonatomic)UIAlertAction *OKAction;
+- (IBAction)PushPlayerlistVC:(UIButton *)sender;
 @property(strong,nonatomic)NSMutableArray *RecordFileNameArray;
 @end

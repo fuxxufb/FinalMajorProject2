@@ -6,6 +6,11 @@
 //  Copyright © 2018年 xiaohan yang. All rights reserved.
 //
 
+
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+
+
+
 #import "UIRepeatViewController.h"
 #import "DefaultInstance.h"
 @interface UIRepeatViewController ()
@@ -20,8 +25,10 @@
 //NSString* timeToString(float ctime);
 @implementation UIRepeatViewController
 
-
-
+UIImage *play1;
+UIImage *play2;
+UIImage *pause1;
+UIImage *pause2;
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
@@ -37,8 +44,8 @@
     [self initAudioPlayer:self.filePath];
     //self.tabBarController.tabBar.hidden=true;
     //----------------------------------------
-    self.editAudioPlot.backgroundColor = [UIColor colorWithRed: 255.0/255.0 green: 255.0/255.0 blue: 255.0/255.0 alpha: 1.0];
-    self.editAudioPlot.color           = [UIColor colorWithRed:255.0/255.0 green:162.0/255.0 blue:0/255.0 alpha: 1.0];
+    self.editAudioPlot.backgroundColor = [UIColor colorWithRed: 255.0/255.0 green: 255.0/255.0 blue: 255.0/255.0 alpha: 0.0];
+    self.editAudioPlot.color           = [UIColor colorWithRed:133.0/255.0 green:98.0/255.0 blue:198.0/255.0 alpha: 1.0];
     self.editAudioPlot.plotType = EZPlotTypeBuffer;
     self.editAudioPlot.shouldFill = YES;
     self.editAudioPlot.shouldMirror = YES;
@@ -54,10 +61,10 @@
     self.drawView.Left=50;
     self.drawView.Right=325;
     [self setplayerBeginPosition:self.drawView.Left];
-    self.playEnding=self.drawView.Right*self.player.duration/375;
+    self.playEnding=self.drawView.Right*self.player.duration/SCREEN_WIDTH;
     //----------------------------------------
     self.During.text=timeToString(self.playEnding);
-    self.CurrentTime.text=timeToString(self.drawView.Left*self.player.duration/375);
+    self.CurrentTime.text=timeToString(self.drawView.Left*self.player.duration/SCREEN_WIDTH);
     //----------------------------------------
     self.musicData=[[NSData alloc]initWithContentsOfURL:self.filePath];
     self.musicDataLength=self.musicData.length;
@@ -79,6 +86,27 @@
     [self.playTimer setFireDate:[NSDate distantFuture]];
     
     self.drawView.isPlaying=false;
+    
+    [self.CurrentTime sizeToFit];
+    [self.During sizeToFit];
+    
+    //------------------------------navigation bar
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    self.navigationController.navigationBar.translucent=true;
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    //-----------------------------
+    //--------------------------------set background image
+    NSString *imagePath = [[NSBundle mainBundle]pathForResource:@"BG_Image_3"ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    self.view.layer.contents=(id)image.CGImage;
+    //------------------------------
+    play1=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"play"ofType:@"png"]];
+    play2=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"LinePlay"ofType:@"png"]];
+    pause1=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"pause"ofType:@"png"]];
+    pause2=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"LinePause"ofType:@"png"]];
+    //------------------------------
     
      [self.OneTap requireGestureRecognizerToFail:self.TwoTap];
     
@@ -122,11 +150,11 @@
     {
         if (self.InteractionMode==2)
         {
-            self.player.currentTime=self.drawView.Left*self.player.duration/375;
+            self.player.currentTime=self.drawView.Left*self.player.duration/SCREEN_WIDTH;
         }
         else if (self.InteractionMode==1)
         {
-            self.player.currentTime=self.drawView.StartX*self.player.duration/375;
+            self.player.currentTime=self.drawView.StartX*self.player.duration/SCREEN_WIDTH;
         }
     }
     
@@ -143,7 +171,7 @@
 -(void)UpdateCurrentPlayLine{
     
     double ctime=self.player.currentTime;
-    self.drawView.LineX=ctime*375/self.player.duration;
+    self.drawView.LineX=ctime*SCREEN_WIDTH/self.player.duration;
     [self.drawView setNeedsDisplay];
     
 }
@@ -156,14 +184,14 @@
 #pragma mark - setPlayer
 -(void)setplayerBeginPosition:(float)position
 {
-    self.player.currentTime=position*self.player.duration/375;
+    self.player.currentTime=position*self.player.duration/SCREEN_WIDTH;
     self.CurrentTime.text=timeToString(self.player.currentTime);
     //[self dellocTimer];
     
 }
 -(void)setplayerEndPosition:(float)position
 {
-    self.playEnding=position*self.player.duration/375;
+    self.playEnding=position*self.player.duration/SCREEN_WIDTH;
     self.During.text=timeToString(self.playEnding);
     //[self dellocTimer];
 }
@@ -189,21 +217,21 @@ NSString* timeToString(float ctime)
     if (![self.player isPlaying])
     {
         //[self deleteFile];
-        float StartTime=self.drawView.Left*self.player.duration/375;
-        float StopTime=self.drawView.Right*self.player.duration/375;
+        float StartTime=self.drawView.Left*self.player.duration/SCREEN_WIDTH;
+        float StopTime=self.drawView.Right*self.player.duration/SCREEN_WIDTH;
         AVURLAsset *asset = [AVURLAsset URLAssetWithURL:self.filePath options:nil];
         NSString *documentsPath=NSTemporaryDirectory();
         //NSData *filedata=[self.musicData subdataWithRange:range];
         // [filedata writeToFile:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/audio.mp3"] atomically:YES];
     
         //--------------------------------------------------------
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"重命名" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Rename" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * textField)
          {
              textField.placeholder=@"New music";
              [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTextFieldTextDidChangeNotification:) name:UITextFieldTextDidChangeNotification object:textField];
          }];
-        UIAlertAction *saveaction=[UIAlertAction actionWithTitle:@"分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        UIAlertAction *saveaction=[UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
             
             UITextField *login = alertController.textFields.firstObject;//获取读入field
             self.NewMusicFileName=login.text;//获取field内容
@@ -226,10 +254,12 @@ NSString* timeToString(float ctime)
             //[self deleteFile:fileName];
             //            [self initAudioPlayer:url];
             //            [self.player play];
+            NSFileManager *fm=[[NSFileManager alloc]init];
+            [fm removeItemAtURL:url error:nil];
             
         }];
         [alertController addAction:saveaction];
-        UIAlertAction *cancelaction=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *cancelaction=[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:cancelaction];
         saveaction.enabled=NO;
         self.OKAction=saveaction;
@@ -238,90 +268,12 @@ NSString* timeToString(float ctime)
         
     }
 }
-- (IBAction)couTouchCancel:(UIButton *)sender
-{
-    if ([self.player isPlaying]&&(self.InteractionMode==1))
-    {
-        [self.player pause];
-        self.drawView.isPlaying=false;
-        self.drawView.Temp=1;
-        self.drawView.EndX=self.drawView.LineX;
-        self.drawView.Left=self.drawView.StartX;
-        self.drawView.Right=self.drawView.EndX;
-        self.drawView.LineX=self.drawView.StartX;
-        [self.drawView setNeedsDisplay];
-        self.player.currentTime=self.drawView.StartX*self.player.duration/375;
-        [self setplayerBeginPosition:self.drawView.StartX];
-        [self setplayerEndPosition:self.drawView.EndX];
-        //        [self initTimer];
-        //        [self.player play];
-        //        [self.timer setFireDate:[NSDate date]];
-        self.InteractionMode=2;
-        
-        
-    }
-}
-- (IBAction)cutTouchDown:(UIButton *)sender
-{
-    if ([self.player isPlaying]&&(self.InteractionMode==2))
-    {
-        self.InteractionMode=1;
-        self.drawView.Temp=3;
-        self.drawView.StartX=self.drawView.LineX;
-        self.drawView.Left=0;
-        self.drawView.Right=375;
-        
-        
-    }
-    
-}
-- (IBAction)ResetSpeed:(UIButton *)sender
-{
-    self.SpeedSilder.value=1.0;
-    self.SpeedLabel.text=[NSString stringWithFormat:@"%.1f" ,self.SpeedSilder.value];
-    self.player.rate=1.0;
-}
-- (IBAction)OneTap:(UITapGestureRecognizer *)sender {
-    if (![self.player isPlaying]){
-        
-        if (self.player.currentTime<(self.drawView.Left*self.player.duration/375))
-        {
-            [self setplayerBeginPosition:self.drawView.Left];
-        }
-        [self.player play];
-        self.drawView.isPlaying=true;
-        [self.timer setFireDate:[NSDate date]];
-        [self.playTimer setFireDate:[NSDate date]];
-    }
-    else if ([self.player isPlaying])
-    {
-        [self.player pause];
-        self.drawView.isPlaying=false;
-        [self.drawView setNeedsDisplay];
-        [self.timer setFireDate:[NSDate distantFuture]];
-        [self.playTimer setFireDate:[NSDate distantFuture]];
-    }
-}
 
-- (IBAction)TwoTap:(UITapGestureRecognizer *)sender {
-    if (![self.player isPlaying]){
-        
-        [self setplayerBeginPosition:self.drawView.Left];
-        [self.player play];
-        self.drawView.isPlaying=true;
-        [self.timer setFireDate:[NSDate date]];
-        [self.playTimer setFireDate:[NSDate date]];
-    }
-    else if ([self.player isPlaying])
-    {
-        [self.player pause];
-        self.drawView.isPlaying=false;
-        [self.drawView setNeedsDisplay];
-        [self.timer setFireDate:[NSDate distantFuture]];
-        [self.playTimer setFireDate:[NSDate distantFuture]];
-    }
-    
-}
+
+
+
+
+
 
 - (IBAction)PanTap:(UIPanGestureRecognizer *)sender {
     if (![self.player isPlaying]&&(self.InteractionMode==2))
@@ -358,7 +310,7 @@ NSString* timeToString(float ctime)
         [self.drawView setNeedsDisplay];
         if (self.drawView.Temp==1)
         {
-            self.CurrentTime.text=timeToString(x*self.player.duration/375);
+            self.CurrentTime.text=timeToString(x*self.player.duration/SCREEN_WIDTH);
             //[self setplayerBeginPosition:x];
         }
         else if (self.drawView.Temp==2)
@@ -467,4 +419,57 @@ NSString* timeToString(float ctime)
 }
 
 
+- (IBAction)LineButtonClick:(UIButton *)sender {
+    if (![self.player isPlaying]){
+        
+        [self setplayerBeginPosition:self.drawView.Left];
+        [self.player play];
+        [self.PlayButton setImage:pause1 forState:UIControlStateNormal];
+        [self.LineButton setImage:pause2 forState:UIControlStateNormal];
+        self.drawView.isPlaying=true;
+        [self.timer setFireDate:[NSDate date]];
+        [self.playTimer setFireDate:[NSDate date]];
+    }
+    else if ([self.player isPlaying])
+    {
+        [self.player pause];
+        [self.PlayButton setImage:play1 forState:UIControlStateNormal];
+        [self.LineButton setImage:play2 forState:UIControlStateNormal];
+        self.drawView.isPlaying=false;
+        [self.drawView setNeedsDisplay];
+        [self.timer setFireDate:[NSDate distantFuture]];
+        [self.playTimer setFireDate:[NSDate distantFuture]];
+    }
+}
+- (IBAction)PlayButtonClick:(UIButton *)sender {
+    if (![self.player isPlaying]){
+        
+        if (self.player.currentTime<(self.drawView.Left*self.player.duration/SCREEN_WIDTH))
+        {
+            [self setplayerBeginPosition:self.drawView.Left];
+        }
+        [self.player play];
+        [self.PlayButton setImage:pause1 forState:UIControlStateNormal];
+        [self.LineButton setImage:pause2 forState:UIControlStateNormal];
+        self.drawView.isPlaying=true;
+        [self.timer setFireDate:[NSDate date]];
+        [self.playTimer setFireDate:[NSDate date]];
+    }
+    else if ([self.player isPlaying])
+    {
+        [self.player pause];
+        [self.PlayButton setImage:play1 forState:UIControlStateNormal];
+        [self.LineButton setImage:play2 forState:UIControlStateNormal];
+        self.drawView.isPlaying=false;
+        [self.drawView setNeedsDisplay];
+        [self.timer setFireDate:[NSDate distantFuture]];
+        [self.playTimer setFireDate:[NSDate distantFuture]];
+    }
+}
+
+- (IBAction)ResetSpeedButtonClick:(UIButton *)sender {
+    self.SpeedSilder.value=1.0;
+    self.SpeedLabel.text=[NSString stringWithFormat:@"%.1f" ,self.SpeedSilder.value];
+    self.player.rate=1.0;
+}
 @end

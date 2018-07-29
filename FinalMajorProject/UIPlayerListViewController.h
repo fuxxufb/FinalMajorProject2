@@ -13,9 +13,12 @@
 @property(nonatomic,strong) NSMutableArray *filepathArray;
 @property(nonatomic,strong) NSMutableArray *fileArray;
 @property (strong, nonatomic) IBOutlet UITableView *fileTableView;
-- (IBAction)UITableViewRefresh:(UIButton *)sender;
+- (IBAction)UITableViewRefresh:(UIBarButtonItem *)sender;
+
 
 
 - (IBAction)AddAudioButtonClick:(UIButton *)sender;
+- (IBAction)PushRecorderVC:(UIButton *)sender;
+@property (strong, nonatomic) IBOutlet UILabel *InformationLabel;
 
 @end

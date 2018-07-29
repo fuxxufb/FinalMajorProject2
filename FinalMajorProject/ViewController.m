@@ -19,8 +19,12 @@ NSInteger mp3Number;
 NSMutableArray* musicNames;
 NSMutableArray* musicPaths;
 NSString *documentsPath;
-
-
+UIImage *Playimage;
+UIImage *Pauseimage;
+UIImage *Loop1;
+UIImage *Loop2;
+UIImage *List1;
+UIImage *List2;
 NSInteger mp3Count;
 #pragma mark - Dealloc
 
@@ -50,6 +54,7 @@ NSInteger mp3Count;
     musicNames=[NSMutableArray arrayWithArray:[DefaultInstance sharedInstance].filenameArray];
     musicPaths=[NSMutableArray arrayWithArray:[DefaultInstance sharedInstance].filepathArray];
     mp3Number=[DefaultInstance sharedInstance].audioNumber;
+    mp3Count=musicPaths.count;
     [self openFileWithFilePathURL:musicPaths[mp3Number]];
     //self.tabBarController.tabBar.hidden=true;
     //----------------------------------------
@@ -69,8 +74,8 @@ NSInteger mp3Count;
     
     //---------------------
     
-    self.audioPlot.backgroundColor = [UIColor colorWithRed: 255.0/255.0 green: 255.0/255.0 blue: 255.0/255.0 alpha: 1.0];
-    self.audioPlot.color           = [UIColor colorWithRed:255.0/255.0 green:162.0/255.0 blue:0/255.0 alpha: 1.0];
+    self.audioPlot.backgroundColor = [UIColor clearColor];
+    self.audioPlot.color           = [UIColor colorWithRed:133.0/255.0 green:98.0/255.0 blue:198.0/255.0 alpha: 1.0];
     self.audioPlot.plotType        = EZPlotTypeBuffer;
     self.audioPlot.shouldFill      = YES;
     self.audioPlot.shouldMirror    = YES;
@@ -79,7 +84,18 @@ NSInteger mp3Count;
     NSLog(@"outputs: %@", [EZAudioDevice outputDevices]);
     
     //---------------------
-    
+    //--------------------------------set background image
+    NSString *imagePath = [[NSBundle mainBundle]pathForResource:@"BG_Image_3"ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    self.view.layer.contents=(id)image.CGImage;
+    //------------------------------
+    Playimage=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"play"ofType:@"png"]];
+    Pauseimage=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"pause"ofType:@"png"]];
+    Loop1=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"Loop1"ofType:@"png"]];
+    Loop2=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"Loop2"ofType:@"png"]];
+    List1=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"list1"ofType:@"png"]];
+    List2=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"List2"ofType:@"png"]];
+    //------------------------
     self.player.shouldLoop = NO;
     self.player.volume=0.5;
     [self.player play];
@@ -113,6 +129,17 @@ NSInteger mp3Count;
     [self.UIPlayButton setTitle:@"暂停" forState:UIControlStateNormal];
     [self.UIPlayButton.titleLabel sizeToFit];
     
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    
+   // [self.OrderButton setHidden:true];
+    //[self.LoopButton setHidden:false];
+    self.IsLoop=true;
+    self.player.shouldLoop=true;
+    self.UIPanLabel.textColor=[UIColor whiteColor];
+    self.UIVolumeLabel.textColor=[UIColor whiteColor];
+    self.During.textColor=[UIColor whiteColor];
+    self.currentTime.textColor=[UIColor whiteColor];
 }
 
 
@@ -296,7 +323,17 @@ NSInteger mp3Count;
         }
     });
 }
-
+- (void)audioPlayer:(EZAudioPlayer *)audioPlayer
+reachedEndOfAudioFile:(EZAudioFile *)audioFile
+{
+    //__weak typeof (self) weakSelf=self;
+    if (!self.IsLoop)
+    {
+        [self PlaynextAudio];
+        [self.player play];
+    }
+    
+}
 
 
 
@@ -330,31 +367,18 @@ NSInteger mp3Count;
     self.player.pan=sender.value;
     self.UIPanLabel.text=[NSString stringWithFormat:@"%.2f",self.player.pan];
 }
-- (IBAction)UILoopButtonClick:(UIButton *)sender {
-    if (self.player.shouldLoop)
-    {
-        self.player.shouldLoop=false;
-        [self.UILoopButton setTitle:@"No loop" forState:UIControlStateNormal];
-        [self.UILoopButton sizeToFit];
-    }
-    else
-    {
-        {
-            self.player.shouldLoop=true;
-            [self.UILoopButton setTitle:@"loop" forState:UIControlStateNormal];
-            [self.UILoopButton sizeToFit];
-        }
-    }
-}
+
 - (IBAction)UIPlayButtonClick:(UIButton *)sender {
     if ([self.player isPlaying])
     {
         [self.player pause];
+        [self.UIPlayButton setImage:Pauseimage forState:UIControlStateNormal];
         [self.UIPlayButton setTitle:@"开始" forState:UIControlStateNormal];
     }
     else if (![self.player isPlaying])
     {
         [self.player play];
+        [self.UIPlayButton setImage:Playimage forState:UIControlStateNormal];
         [self.UIPlayButton setTitle:@"暂停" forState:UIControlStateNormal];
     }
 }
@@ -371,6 +395,121 @@ NSInteger mp3Count;
     {
         self.player.currentTime=self.player.currentTime-2;
     }
+}
+
+- (IBAction)NextAudio:(UIButton *)sender {
+    [self PlaynextAudio];
+}
+-(void)PlaynextAudio
+{
+    if ([self.player isPlaying])
+    {
+        if (mp3Number<(mp3Count-1))
+        {
+            [self.player pause];
+            mp3Number++;
+            NSURL *URL;
+            URL=musicPaths[mp3Number];
+            [self openFileWithFilePathURL:URL];
+            [self.player setAudioFile:self.audioFile];
+            [self.player play];
+            
+        }
+        else if (mp3Number>=(mp3Count-1))
+        {
+            [self.player pause];
+            mp3Number=0;
+            [self openFileWithFilePathURL:musicPaths[mp3Number]];
+            [self.player setAudioFile:self.audioFile];
+            [self.player play];
+        }
+    }
+    else if (![self.player isPlaying])
+    {
+        if (mp3Number<(mp3Count-1))
+        {
+            //[self.player pause];
+            mp3Number++;
+            [self openFileWithFilePathURL:musicPaths[mp3Number]];
+            [self.player setAudioFile:self.audioFile];
+            
+            //[self.player play];
+            
+        }
+        else if (mp3Number>=(mp3Count-1))
+        {
+            //[self.player pause];
+            mp3Number=0;
+            [self openFileWithFilePathURL:musicPaths[mp3Number]];
+            [self.player setAudioFile:self.audioFile];
+            //[self.player play];
+        }
+    }
+}
+
+- (IBAction)PreAudio:(UIButton *)sender {
+    if ([self.player isPlaying])
+    {
+        if (mp3Number>0)
+        {
+            [self.player pause];
+            mp3Number--;
+            NSURL *URL;
+            URL=musicPaths[mp3Number];
+            [self openFileWithFilePathURL:URL];
+            [self.player setAudioFile:self.audioFile];
+            [self.player play];
+            
+        }
+        else if (mp3Number<=0)
+        {
+            [self.player pause];
+            mp3Number=mp3Count-1;
+            [self openFileWithFilePathURL:musicPaths[mp3Number]];
+            [self.player setAudioFile:self.audioFile];
+            [self.player play];
+        }
+    }
+    else if (![self.player isPlaying])
+    {
+        if (mp3Number>0)
+        {
+            //[self.player pause];
+            mp3Number--;
+            [self openFileWithFilePathURL:musicPaths[mp3Number]];
+            [self.player setAudioFile:self.audioFile];
+            
+            //[self.player play];
+            
+        }
+        else if (mp3Number<=0)
+        {
+            //[self.player pause];
+            mp3Number=mp3Count-1;
+            [self openFileWithFilePathURL:musicPaths[mp3Number]];
+            [self.player setAudioFile:self.audioFile];
+            //[self.player play];
+        }
+    }
+}
+- (IBAction)LoopButtonClick:(UIButton *)sender {
+    if (self.IsLoop==false)
+    {
+        [self.OrderButton setImage:List2 forState:UIControlStateNormal];
+        [self.LoopButton setImage:Loop1 forState:UIControlStateNormal];
+    }
+    self.IsLoop=true;
+    self.player.shouldLoop=self.IsLoop;
+    
+}
+- (IBAction)OrderButtonClick:(UIButton *)sender {
+    if (self.IsLoop)
+    {
+        [self.OrderButton setImage:List1 forState:UIControlStateNormal];
+        [self.LoopButton setImage:Loop2 forState:UIControlStateNormal];
+    }
+    self.IsLoop=false;
+    self.player.shouldLoop=self.IsLoop;
 }
 @end
 

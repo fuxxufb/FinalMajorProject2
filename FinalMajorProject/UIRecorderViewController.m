@@ -33,7 +33,7 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UpdateTableView) name:@"UpdateTableView" object:nil];
     //------------------------------UI
-    self.EZRecordPlot.backgroundColor = [UIColor colorWithRed: 0.984 green: 0.71 blue: 0.365 alpha: 1];
+    self.EZRecordPlot.backgroundColor = [UIColor clearColor];
     self.EZRecordPlot.color           = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
     self.EZRecordPlot.plotType        = EZPlotTypeRolling;
     self.EZRecordPlot.shouldFill      = YES;
@@ -49,6 +49,22 @@
     {
         NSLog(@"Error overriding output to the speaker: %@", error.localizedDescription);
     }
+    
+    //--------------------------------set background image
+    NSString *imagePath = [[NSBundle mainBundle]pathForResource:@"BG_Image_3"ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    self.view.layer.contents=(id)image.CGImage;
+    //------------------------------
+    //------------------------------navigation bar
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    self.navigationController.navigationBar.translucent=true;
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    //-----------------------------
+    //-----------------------------
+    self.UIRecordTableView.backgroundColor=[UIColor clearColor];
+    //-----------------------------
     
     [self UpdateTableView];
     
@@ -263,6 +279,10 @@
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     cell.textLabel.text=self.RecordFileNameArray[indexPath.row];
+    cell.backgroundColor=[UIColor clearColor];
+    cell.textLabel.textColor=[UIColor whiteColor];
+    cell.detailTextLabel.text=@">";
+    cell.detailTextLabel.textColor=[UIColor whiteColor];
     return cell;
 }
 
@@ -293,6 +313,9 @@
     VC.hidesBottomBarWhenPushed=true;
     [self.navigationController pushViewController:VC animated:YES];
     
+    
+    
+    
     //NSLog(@"%d",[DefaultInstance sharedInstance].audioNumber);
 }
 
@@ -307,4 +330,8 @@
  */
 
 
+- (IBAction)PushPlayerlistVC:(UIButton *)sender {
+    ViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"UIPlayerListViewController"];
+   // [self presentViewController:VC animated:YES completion:nil];
+}
 @end

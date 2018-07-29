@@ -19,6 +19,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.ipAddressLabel.text=[WiFiConnectController OnloadWiFiServer];
+    NSString *imagePath = [[NSBundle mainBundle]pathForResource:@"BG_transfer"ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    self.view.layer.contents=(id)image.CGImage;
+    //------------------------------navigation bar
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    self.navigationController.navigationBar.translucent=true;
+    self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    //-----------------------------
+    
     [self.ipAddressLabel sizeToFit];
     
 }

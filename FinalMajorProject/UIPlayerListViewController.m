@@ -10,6 +10,7 @@
 #import "WiFiConnectController.h"
 #import "DefaultInstance.h"
 #import "ViewController.h"
+#import <AVFoundation/AVFoundation.h>
 @interface UIPlayerListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 
@@ -19,37 +20,51 @@ NSString *ipString;
 @implementation UIPlayerListViewController
 
 - (void)viewDidLoad {
-    self.filenameArray=[DefaultInstance sharedInstance].filenameArray;
+    
+    //--------------load namearray and url(path) array
     self.fileArray=[DefaultInstance sharedInstance].fileArray;
+    self.filenameArray=[DefaultInstance sharedInstance].filenameArray;
+    //if (self.filenameArray==nil)
+    //{
+        self.filenameArray=[[NSMutableArray alloc]init];
+    //}
     self.filepathArray=[DefaultInstance sharedInstance].filepathArray;
+    //if (self.filepathArray==nil)
+    //{
     self.filepathArray=[[NSMutableArray alloc]init];
+    //}
+    //-----------
     [super viewDidLoad];
+    //--------------------------------set background image
+    NSString *imagePath = [[NSBundle mainBundle]pathForResource:@"BG_Image_3"ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    self.view.layer.contents=(id)image.CGImage;
+    //------------------------------
+    
+    //-----------------------------
+    self.fileTableView.backgroundColor=[UIColor clearColor];
+    //----------------------------
+    
+    //------------------set navigationbar and tabbar lucency
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    self.navigationController.navigationBar.translucent=true;
+   // [self.tabBarController.tabBar setBackgroundImage:[UIImage new]];
+    //[self.tabBarController.tabBar setShadowImage:[UIImage new]];
+    //self.tabBarController.tabBar.translucent=true;
+    //-------------------------------------------------
+    //---------------------------set statusbar white(plist changed)
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+
+    
+    //----------------------set notificationcenter
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFile) name:@"processEpilogueData" object:nil];
+    //---------------------
+    
     [self showFile];
     
-    //self.tabBarController.tabBar.hidden=false;
-    /* HTTPServer *httpServer;
-    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    NSLog(@"filePath : %@", filePath);
-    httpServer=[[HTTPServer alloc]init];
-    [httpServer setType:@"_http._tcp."];
-    NSString *webPath=[[NSBundle mainBundle]resourcePath];
-    NSLog(@"webPath:%@",webPath);
-    [httpServer setDocumentRoot:webPath];
-    [httpServer setConnectionClass:[MyHTTPConnection class]];
-    NSError *error;
-    if ([httpServer start:&error])
-    {
-        ipString = [NSString stringWithFormat:@"请在网页输入这个地址  http://%@:%hu/", [SJXCSMIPHelper deviceIPAdress], [httpServer listeningPort]];
-        NSLog(@"%@",ipString);
-        
-    }else
-    {
-        NSLog(@"%@",error);
-    }*/
     
-    
-    //NSLog([WiFiConnectController OnloadWiFiServer]);
     
     // Do any additional setup after loading the view.
 }
@@ -75,26 +90,45 @@ NSString *ipString;
     //dispatch_async(dispatch_get_main_queue(), ^{
     NSFileManager *fileManager=[NSFileManager defaultManager];
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    NSLog(@"地址：%@", documentsPath);
-        
-    self.filenameArray = [NSMutableArray arrayWithArray:[fileManager contentsOfDirectoryAtPath:documentsPath error:nil]];
+   // NSLog(@"地址：%@", documentsPath);
+    NSMutableArray *fArray=[[NSMutableArray alloc]init];
+    
+    fArray = [NSMutableArray arrayWithArray:[fileManager contentsOfDirectoryAtPath:documentsPath error:nil]];
    // NSLog(@"%@",self.filenameArray[0]);
-    for (int i=0;i<self.filenameArray.count;i++)
+    for (int i=0;i<fArray.count;i++)
     {
-        NSString *str=[NSString stringWithString:self.filenameArray[i]];
+        NSString *str=[NSString stringWithString:fArray[i]];
         NSString *doc2=[documentsPath stringByAppendingString:@"/"];
         NSString *str2=[doc2 stringByAppendingString:str];
-        NSLog(@"%@",str2);
+       // NSLog(@"%@",str2);
         if ([str2 isAbsolutePath])
         {
             NSURL *url=[NSURL fileURLWithPath:str2];
-            [self.filepathArray insertObject:url atIndex:i];
+            AVAudioFile *avFile=[[AVAudioFile alloc]initForReading:url error:nil];
+            if (avFile!=nil)
+            {
+                if (![self.filepathArray containsObject:url])
+                {
+                    [self.filenameArray addObject:fArray[i]];
+                    [self.filepathArray addObject:url];
+                }
+            }
+            
         }
     }
   //  NSLog(@"%@",str);
     [DefaultInstance sharedInstance].filenameArray=self.filenameArray;
     [DefaultInstance sharedInstance].filepathArray=self.filepathArray;
     [self.fileTableView reloadData];
+    if (self.filepathArray.count==0)
+    {
+        self.InformationLabel.hidden=false;
+        
+    }
+    else
+    {
+        self.InformationLabel.hidden=true;
+    }
     //});
     
 }
@@ -115,7 +149,9 @@ NSString *ipString;
     return alert;
 }
 
-- (IBAction)UITableViewRefresh:(UIButton *)sender {
+
+
+- (IBAction)UITableViewRefresh:(UIBarButtonItem *)sender {
     [self showFile];
 }
 
@@ -123,6 +159,11 @@ NSString *ipString;
     [self presentViewController:[self CreateAlertController] animated:YES completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"processEpilogueData" object:nil];
     
+}
+
+- (IBAction)PushRecorderVC:(UIButton *)sender {
+    ViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"UIRecorderViewController"];
+   // [self presentViewController:VC animated:YES completion:nil];
 }
 //[[NSNotificationCenter defaultCenter] postNotificationName:@"processEpilogueData" object:nil];
 #pragma mark - <UITableViewDataSource>
@@ -141,12 +182,25 @@ NSString *ipString;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     cell.textLabel.text = self.filenameArray[indexPath.row];
+    cell.backgroundColor=[UIColor clearColor];
+    cell.textLabel.textColor=[UIColor whiteColor];
+    cell.detailTextLabel.textColor=[UIColor whiteColor];
+    //-------------------------------------
+    //AVAudioFile *avFile=[[AVAudioFile alloc]initForReading:self.filepathArray[indexPath.row] error:nil];
+    EZAudioFile *avFile=[[EZAudioFile alloc]initWithURL:self.filepathArray[indexPath.row]];
+   // AVAudioPlayer *avplayer=[[AVAudioPlayer alloc]initWithContentsOfURL:self.filepathArray[indexPath.row] error:nil];
+    //NSLog([NSString stringWithFormat:@"%@",avFile.formattedDuration]);
+    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",avFile.formattedDuration];
+    
+    
+    //cell.backgroundColor=[UIColor clearColor];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
     //int t=indexPath.row;
+    [self showFile];
     [DefaultInstance sharedInstance].audioNumber=indexPath.row;
     //NSLog(@"%d",[DefaultInstance sharedInstance].audioNumber);
 }

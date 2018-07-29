@@ -23,7 +23,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *CutB;
 - (IBAction)couTouchCancel:(UIButton *)sender;
 - (IBAction)cutTouchDown:(UIButton *)sender;
-@property (strong, nonatomic) IBOutlet UIButton *SaveB;
 - (IBAction)SaveButton:(UIButton *)sender;
 @property (strong, nonatomic) IBOutlet UISlider *SpeedSilder;
 - (IBAction)SpeedSilderChange:(UISlider *)sender;
@@ -44,5 +43,10 @@
 - (IBAction)TwoTap:(UITapGestureRecognizer *)sender;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *PanTap;
 - (IBAction)PanTap:(UIPanGestureRecognizer *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *LineButton;
+- (IBAction)LineButtonClick:(UIButton *)sender;
+@property (strong, nonatomic) IBOutlet UIButton *PlayButton;
+- (IBAction)PlayButtonClick:(UIButton *)sender;
+- (IBAction)ResetSpeedButtonClick:(UIButton *)sender;
 
 @end
