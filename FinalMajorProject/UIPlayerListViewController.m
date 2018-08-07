@@ -205,4 +205,45 @@ NSString *ipString;
     //NSLog(@"%d",[DefaultInstance sharedInstance].audioNumber);
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+// 定义编辑样式
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        
+        [self Deleteitem:indexPath.row];
+          //  NSString *user_no = [self.actor_cpllaboredArray[indexPath.row] valueForKey:@"user_no"];
+           // [self fetch_api_Recruit_withdraw:user_no];
+            
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        if ((self.filepathArray.count==0)&&(self.InformationLabel.hidden==true))
+        {
+            self.InformationLabel.hidden=false;
+        }
+    }
+}
+
+// 修改编辑按钮文字
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"Delete";
+}
+-(void)Deleteitem:(long)indexRow
+{
+    
+    NSFileManager *fm=[[NSFileManager alloc]init];
+    [fm removeItemAtURL:self.filepathArray[indexRow] error:nil];
+    [self.filenameArray removeObjectAtIndex:(NSUInteger)indexRow];
+    [self.filepathArray removeObjectAtIndex:(NSUInteger)indexRow];
+    [DefaultInstance sharedInstance].filepathArray=self.filepathArray;
+    [DefaultInstance sharedInstance].filenameArray=self.filenameArray;
+    //[self showFile];
+}
+
 @end
