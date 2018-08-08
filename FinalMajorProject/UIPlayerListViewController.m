@@ -120,6 +120,15 @@ NSString *ipString;
     [DefaultInstance sharedInstance].filenameArray=self.filenameArray;
     [DefaultInstance sharedInstance].filepathArray=self.filepathArray;
     [self.fileTableView reloadData];
+    if ([DefaultInstance sharedInstance].isFirst)
+    {
+        self.InformationLabel.textColor=[UIColor blueColor];
+        
+    }
+    else
+    {
+        self.InformationLabel.textColor=[UIColor greenColor];
+    }
     if (self.filepathArray.count==0)
     {
         self.InformationLabel.hidden=false;
@@ -162,7 +171,7 @@ NSString *ipString;
 }
 
 - (IBAction)PushRecorderVC:(UIButton *)sender {
-    ViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"UIRecorderViewController"];
+    //ViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"UIRecorderViewController"];
    // [self presentViewController:VC animated:YES completion:nil];
 }
 //[[NSNotificationCenter defaultCenter] postNotificationName:@"processEpilogueData" object:nil];
@@ -245,5 +254,7 @@ NSString *ipString;
     [DefaultInstance sharedInstance].filenameArray=self.filenameArray;
     //[self showFile];
 }
+
+
 
 @end

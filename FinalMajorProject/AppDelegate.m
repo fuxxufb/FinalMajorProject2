@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "UIPlayerListViewController.h"
+#import "DefaultInstance.h"
 @interface AppDelegate ()
 
 @end
@@ -17,11 +18,18 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    //self.window= [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-   // [self.window makeKeyAndVisible];
-   // UIStoryboard *StoryBoard=[UIStoryboard storyboardWithName:@"Main.storyboard" bundle:nil];
-   // UIPlayerListViewController *vc=[UIPlayerListViewController alloc];
-   // self.window.rootViewController=vc;
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"isOne"]isEqual:@"isOne"])
+    {
+        NSLog(@"Not First");
+        [DefaultInstance sharedInstance].isFirst=false;
+        return YES;
+    }
+    else
+    {
+        NSLog(@"First");
+        [DefaultInstance sharedInstance].isFirst=true;
+        return YES;
+    }
     return YES;
 }
 

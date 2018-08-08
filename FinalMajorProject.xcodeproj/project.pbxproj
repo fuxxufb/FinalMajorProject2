@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B053DA5211A2196001343D1 /* UIViewController+Storyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B053DA3211A2196001343D1 /* UIViewController+Storyboard.m */; };
 		5B23D357210DAA0100147002 /* BG_transfer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5B23D356210DAA0100147002 /* BG_transfer.jpg */; };
 		5B23D359210E23F200147002 /* Next.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B23D358210E23F200147002 /* Next.png */; };
 		5B23D35B210E240000147002 /* Pre.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B23D35A210E240000147002 /* Pre.png */; };
@@ -99,6 +100,8 @@
 
 /* Begin PBXFileReference section */
 		2DF461171B7BFEC068812CCE /* Pods-FinalMajorProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalMajorProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-FinalMajorProject/Pods-FinalMajorProject.release.xcconfig"; sourceTree = "<group>"; };
+		5B053DA3211A2196001343D1 /* UIViewController+Storyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Storyboard.m"; sourceTree = "<group>"; };
+		5B053DA4211A2196001343D1 /* UIViewController+Storyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Storyboard.h"; sourceTree = "<group>"; };
 		5B23D356210DAA0100147002 /* BG_transfer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = BG_transfer.jpg; sourceTree = "<group>"; };
 		5B23D358210E23F200147002 /* Next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Next.png; sourceTree = "<group>"; };
 		5B23D35A210E240000147002 /* Pre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pre.png; sourceTree = "<group>"; };
@@ -448,6 +451,8 @@
 				5BEDC8A520F341C600996F53 /* SJXCSMIPHelper.h */,
 				5BEDC8A420F341C600996F53 /* SJXCSMIPHelper.m */,
 				5BE67BE520F1E7B80050DDCD /* Assets.xcassets */,
+				5B053DA4211A2196001343D1 /* UIViewController+Storyboard.h */,
+				5B053DA3211A2196001343D1 /* UIViewController+Storyboard.m */,
 				5BE67BEA20F1E7B80050DDCD /* Info.plist */,
 				5BE67BEB20F1E7B80050DDCD /* main.m */,
 				5BE67BE220F1E7B70050DDCD /* FinalMajorProject.xcdatamodeld */,
@@ -737,6 +742,7 @@
 				5BEDC8B820F5EA3200996F53 /* UIAddViewViewController.m in Sources */,
 				5BE58E5021085A6E00A6B6D8 /* WebSocket.m in Sources */,
 				5BE58E7321085B1000A6B6D8 /* ContextFilterLogFormatter.m in Sources */,
+				5B053DA5211A2196001343D1 /* UIViewController+Storyboard.m in Sources */,
 				5BE58E5821085A6E00A6B6D8 /* HTTPServer.m in Sources */,
 				5BE58E5121085A6E00A6B6D8 /* MultipartMessageHeaderField.m in Sources */,
 				5BEDC8A620F341C600996F53 /* SJXCSMIPHelper.m in Sources */,
@@ -913,13 +919,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QT6VR79Y5E;
+				DEVELOPMENT_TEAM = D6JHH2A5YN;
 				INFOPLIST_FILE = FinalMajorProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiaohanyang.FinalMajorProject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ekkoyang.FinalMajorProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -931,13 +938,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QT6VR79Y5E;
+				DEVELOPMENT_TEAM = D6JHH2A5YN;
 				INFOPLIST_FILE = FinalMajorProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiaohanyang.FinalMajorProject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ekkoyang.FinalMajorProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

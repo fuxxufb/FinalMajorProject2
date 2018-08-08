@@ -16,5 +16,6 @@
 @property(nonatomic,strong) NSMutableArray *filenameArray;
 @property(nonatomic,strong) NSMutableArray *filepathArray;
 @property(nonatomic,strong) NSMutableArray *fileArray;
+@property(nonatomic,assign)bool *isFirst;
 
 @end
