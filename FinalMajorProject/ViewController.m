@@ -98,7 +98,6 @@ NSInteger mp3Count;
     //------------------------
     self.player.shouldLoop = NO;
     self.player.volume=0.5;
-    [self.player play];
     //-------------------------------
     
     [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
@@ -140,9 +139,30 @@ NSInteger mp3Count;
     self.UIVolumeLabel.textColor=[UIColor whiteColor];
     self.During.textColor=[UIColor whiteColor];
     self.currentTime.textColor=[UIColor whiteColor];
+    //--------------------------------------------
+    if ([DefaultInstance sharedInstance].isFirst)
+    {
+        UIImageView *GudianceBG=[[UIImageView alloc]initWithFrame:self.view.bounds];
+        GudianceBG.image=[UIImage imageNamed:@"PlayGuidanceImage"];
+        GudianceBG.userInteractionEnabled=true;
+        [self.view addSubview:GudianceBG];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissGuideView:)];
+        [GudianceBG addGestureRecognizer:tap];
+    }
+    else
+    {
+        [self.player play];
+    }
 }
 
-
+-(void)dismissGuideView:(UITapGestureRecognizer*)tap
+{
+   // NSLog(@"errererererer");
+    UIView *view=tap.view;
+    [view removeFromSuperview];
+    [view removeGestureRecognizer:tap];
+    [self.player play];
+}
 
 
 //------------------------------------------------------------------------------

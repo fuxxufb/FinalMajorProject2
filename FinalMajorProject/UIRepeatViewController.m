@@ -110,6 +110,25 @@ UIImage *pause2;
     
      [self.OneTap requireGestureRecognizerToFail:self.TwoTap];
     
+    if ([DefaultInstance sharedInstance].isFirst)
+    {
+        UIImageView *GudianceBG=[[UIImageView alloc]initWithFrame:self.view.bounds];
+        GudianceBG.image=[UIImage imageNamed:@"EditGuidanceImage"];
+        GudianceBG.userInteractionEnabled=true;
+        [self.view addSubview:GudianceBG];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissGuideView:)];
+        [GudianceBG addGestureRecognizer:tap];
+        
+        
+    }
+}
+-(void)dismissGuideView:(UITapGestureRecognizer*)tap
+{
+   // NSLog(@"errererererer");
+    UIView *view=tap.view;
+    [view removeFromSuperview];
+    [view removeGestureRecognizer:tap];
+    //[self.player play];
 }
 
 - (void)openFileWithFilePathURL:(NSURL*)filePathURL

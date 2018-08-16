@@ -185,6 +185,9 @@
                                        [self deleteFile:filename];
                                        [fm moveItemAtPath:[self testFilePath] toPath:[self SaveFilePath:filename] error:nil];
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTableView" object:nil];
+                                       self.EZRecorder=[EZRecorder recorderWithURL:[self testFilePathURL] clientFormat:[self.microphone audioStreamBasicDescription] fileType:EZRecorderFileTypeM4A delegate:self];
+                                       self.RecordCurrentTimeLabel.text=@"00:00";
+                                       [self.EZRecordPlot clear];
                                    }];
         [Alert addAction:saveaction];
         UIAlertAction *cancelaction=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action)

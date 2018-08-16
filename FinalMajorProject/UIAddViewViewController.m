@@ -31,7 +31,7 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     //-----------------------------
     
-    [self.ipAddressLabel sizeToFit];
+    self.ipAddressLabel.adjustsFontSizeToFitWidth=true;
     
 }
 

@@ -27,6 +27,7 @@
 		5B6A39EA210AF98A00FFBAF8 /* PlayButton_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B6A39E6210AF98900FFBAF8 /* PlayButton_highlight.png */; };
 		5B6A39EB210AF98A00FFBAF8 /* PlayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B6A39E7210AF98900FFBAF8 /* PlayButton.png */; };
 		5B6A39EC210AF98A00FFBAF8 /* RecordButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B6A39E8210AF98900FFBAF8 /* RecordButton.png */; };
+		5BD7CF852124F10A008C36FB /* LaunchScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5BD7CF842124F10A008C36FB /* LaunchScreen.jpg */; };
 		5BE01F3C2109B7D400D0C880 /* BG_Image_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5BE01F3B2109B7D400D0C880 /* BG_Image_2.jpg */; };
 		5BE01F3E2109CD1A00D0C880 /* BG_Image_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5BE01F3D2109CD1900D0C880 /* BG_Image_3.jpg */; };
 		5BE24E0520FDCB15007240DF /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BE24E0420FDCB15007240DF /* DrawView.m */; };
@@ -121,6 +122,7 @@
 		5B6A39E6210AF98900FFBAF8 /* PlayButton_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayButton_highlight.png; sourceTree = "<group>"; };
 		5B6A39E7210AF98900FFBAF8 /* PlayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayButton.png; sourceTree = "<group>"; };
 		5B6A39E8210AF98900FFBAF8 /* RecordButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RecordButton.png; sourceTree = "<group>"; };
+		5BD7CF842124F10A008C36FB /* LaunchScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LaunchScreen.jpg; sourceTree = "<group>"; };
 		5BE01F3B2109B7D400D0C880 /* BG_Image_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = BG_Image_2.jpg; path = "../../../../毕设素材/BG_Image_2.jpg"; sourceTree = "<group>"; };
 		5BE01F3D2109CD1900D0C880 /* BG_Image_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = BG_Image_3.jpg; sourceTree = "<group>"; };
 		5BE24E0320FDCB15007240DF /* DrawView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				5BE01F3D2109CD1900D0C880 /* BG_Image_3.jpg */,
 				5BE01F3B2109B7D400D0C880 /* BG_Image_2.jpg */,
 				5BE58E8121085E3E00A6B6D8 /* BG_Image.jpg */,
+				5BD7CF842124F10A008C36FB /* LaunchScreen.jpg */,
 				5B6A39E6210AF98900FFBAF8 /* PlayButton_highlight.png */,
 				5B23D370210E2C6900147002 /* LinePlay.png */,
 				5B23D372210E2CC300147002 /* reset.png */,
@@ -640,6 +643,7 @@
 				5B23D359210E23F200147002 /* Next.png in Resources */,
 				5B6A39E9210AF98A00FFBAF8 /* RecordButton_highlight.png in Resources */,
 				5B23D366210E274800147002 /* pause.png in Resources */,
+				5BD7CF852124F10A008C36FB /* LaunchScreen.jpg in Resources */,
 				5BE01F3C2109B7D400D0C880 /* BG_Image_2.jpg in Resources */,
 				5BE58E7721085B1000A6B6D8 /* About.txt in Resources */,
 				5BE67BE920F1E7B80050DDCD /* LaunchScreen.storyboard in Resources */,
@@ -919,16 +923,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D6JHH2A5YN;
+				DEVELOPMENT_TEAM = QT6VR79Y5E;
 				INFOPLIST_FILE = FinalMajorProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ekkoyang.FinalMajorProject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaohanyang.FinalMajorProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -938,16 +942,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D6JHH2A5YN;
+				DEVELOPMENT_TEAM = QT6VR79Y5E;
 				INFOPLIST_FILE = FinalMajorProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ekkoyang.FinalMajorProject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaohanyang.FinalMajorProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -18,17 +18,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"isOne"]isEqual:@"isOne"])
-    {
-        NSLog(@"Not First");
-        [DefaultInstance sharedInstance].isFirst=false;
-        return YES;
-    }
-    else
-    {
-        NSLog(@"First");
+    application.statusBarHidden=false;
+    NSUserDefaults *TimeOfBootCount = [NSUserDefaults standardUserDefaults];
+    if (![TimeOfBootCount valueForKey:@"time"]) {
+        [TimeOfBootCount setValue:@"sd" forKey:@"time"];
+        NSLog(@"第一次启动");
         [DefaultInstance sharedInstance].isFirst=true;
-        return YES;
+    }else{
+        NSLog(@"不是第一次启动");
+        [DefaultInstance sharedInstance].isFirst=false;
     }
     return YES;
 }
@@ -107,5 +105,8 @@
         abort();
     }
 }
+
+
+
 
 @end

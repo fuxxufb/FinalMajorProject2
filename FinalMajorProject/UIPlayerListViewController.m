@@ -66,6 +66,8 @@ NSString *ipString;
     
     
     
+    
+    
     // Do any additional setup after loading the view.
 }
 
@@ -88,28 +90,28 @@ NSString *ipString;
 
 - (void)showFile {
     //dispatch_async(dispatch_get_main_queue(), ^{
-    NSFileManager *fileManager=[NSFileManager defaultManager];
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-   // NSLog(@"地址：%@", documentsPath);
-    NSMutableArray *fArray=[[NSMutableArray alloc]init];
-    
-    fArray = [NSMutableArray arrayWithArray:[fileManager contentsOfDirectoryAtPath:documentsPath error:nil]];
+    NSFileManager *fileManager=[NSFileManager defaultManager];//init Filemanager
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];//get Document folder Path
+   // NSLog(@"Path：%@", documentsPath);
+    NSMutableArray *fArray=[[NSMutableArray alloc]init];//init FileArray
+    fArray = [NSMutableArray arrayWithArray:[fileManager contentsOfDirectoryAtPath:documentsPath
+        error:nil]];//Get file name in the Document Path
    // NSLog(@"%@",self.filenameArray[0]);
-    for (int i=0;i<fArray.count;i++)
+    for (int i=0;i<fArray.count;i++)//traversal array
     {
         NSString *str=[NSString stringWithString:fArray[i]];
         NSString *doc2=[documentsPath stringByAppendingString:@"/"];
-        NSString *str2=[doc2 stringByAppendingString:str];
+        NSString *str2=[doc2 stringByAppendingString:str];//DocumentPath+'/'+filename=fileabsolutePath
        // NSLog(@"%@",str2);
         if ([str2 isAbsolutePath])
         {
-            NSURL *url=[NSURL fileURLWithPath:str2];
+            NSURL *url=[NSURL fileURLWithPath:str2];//To URL
             AVAudioFile *avFile=[[AVAudioFile alloc]initForReading:url error:nil];
             if (avFile!=nil)
             {
                 if (![self.filepathArray containsObject:url])
                 {
-                    [self.filenameArray addObject:fArray[i]];
+                    [self.filenameArray addObject:fArray[i]];//Add to Core Array
                     [self.filepathArray addObject:url];
                 }
             }
@@ -120,15 +122,7 @@ NSString *ipString;
     [DefaultInstance sharedInstance].filenameArray=self.filenameArray;
     [DefaultInstance sharedInstance].filepathArray=self.filepathArray;
     [self.fileTableView reloadData];
-    if ([DefaultInstance sharedInstance].isFirst)
-    {
-        self.InformationLabel.textColor=[UIColor blueColor];
-        
-    }
-    else
-    {
-        self.InformationLabel.textColor=[UIColor greenColor];
-    }
+    [self UpdateInformationLabelColor];
     if (self.filepathArray.count==0)
     {
         self.InformationLabel.hidden=false;
@@ -158,9 +152,21 @@ NSString *ipString;
     return alert;
 }
 
-
+-(void)UpdateInformationLabelColor
+{
+    if ([DefaultInstance sharedInstance].isFirst)
+    {
+        self.InformationLabel.textColor=[UIColor blueColor];
+        
+    }
+    else
+    {
+        self.InformationLabel.textColor=[UIColor greenColor];
+    }
+}
 
 - (IBAction)UITableViewRefresh:(UIBarButtonItem *)sender {
+    //[DefaultInstance sharedInstance].isFirst=false;
     [self showFile];
 }
 
