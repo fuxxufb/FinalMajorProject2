@@ -59,7 +59,7 @@ UIImage *pause2;
     
     self.drawView.Temp=1;
     self.drawView.Left=50;
-    self.drawView.Right=325;
+    self.drawView.Right=SCREEN_WIDTH;
     [self setplayerBeginPosition:self.drawView.Left];
     self.playEnding=self.drawView.Right*self.player.duration/SCREEN_WIDTH;
     //----------------------------------------
@@ -162,7 +162,7 @@ UIImage *pause2;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(ShowCurrentTime) userInfo:@"admin" repeats:YES];
 }
 -(void)ShowCurrentTime{
-    self.CurrentTime.text=timeToString(self.player.currentTime);
+    self.CurrentTime.text=timeToString(self.player.currentTime);//set time to 00:00
     double f=self.player.currentTime;
     double t=self.playEnding;
     if (f>=t)
@@ -178,12 +178,8 @@ UIImage *pause2;
     }
     
 }
--(void)dellocTimer{
-    if (self.timer) {
-        [self.timer invalidate];
-        self.timer = nil;
-    }
-}
+
+
 -(void)initplayTimer{
     self.playTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(UpdateCurrentPlayLine) userInfo:@"admin" repeats:YES];
 }
@@ -252,16 +248,18 @@ NSString* timeToString(float ctime)
          }];
         UIAlertAction *saveaction=[UIAlertAction actionWithTitle:@"Share" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
             
-            UITextField *login = alertController.textFields.firstObject;//获取读入field
-            self.NewMusicFileName=login.text;//获取field内容
-            NSLog(@"%@", self.NewMusicFileName);//输出内容
-            NSString *fileName=[self.NewMusicFileName stringByAppendingString:@".m4a"];//将.mp3添加到内容后面设置为名称
-            [self deleteFile:fileName];//查找同名文件并删除
-            NSString *filePath=[documentsPath stringByAppendingString:fileName];//将名字加到documents的path后成为文件path
-            NSLog(@"%@",filePath);//输出文件path路径
+            UITextField *login = alertController.textFields.firstObject;//get input field
+            self.NewMusicFileName=login.text;//get input content
+            NSLog(@"%@", self.NewMusicFileName);
+            NSString *fileName=[self.NewMusicFileName stringByAppendingString:@".m4a"];
+            //add .m4a suffix
+            [self deleteFile:fileName];//find same file and delete
+            NSString *filePath=[documentsPath stringByAppendingString:fileName];
+            //combine filename with filepath
+            NSLog(@"%@",filePath);
             
-            [self exportAsset:asset toFilePath:filePath startTime:StartTime endTime:StopTime];//调用asset输出文件
-            //[filedata writeToFile:filePath atomically:YES];//将切割好的数据写入文件
+            [self exportAsset:asset toFilePath:filePath startTime:StartTime endTime:StopTime];
+            //invoke export
             
             NSURL *url = [NSURL fileURLWithPath:filePath];//获取这个路径文件的url
             //---------------------------------------------调用分享
@@ -375,30 +373,28 @@ NSString* timeToString(float ctime)
     NSURL *exportURL = [NSURL fileURLWithPath:filePath];
     
     AVAssetWriter *assetWriter = [AVAssetWriter assetWriterWithURL:exportURL fileType:AVFileTypeCoreAudioFormat error:nil];
-    CMTime assetTime = [avAsset duration];//获取音频总时长,单位秒
+    CMTime assetTime = [avAsset duration];//get the audio during time by second
     
-    Float64 duration = CMTimeGetSeconds(assetTime); //返回float64格式
+    Float64 duration = CMTimeGetSeconds(assetTime); //return Float64
     
     
-    CMTime startTime = CMTimeMake(Begin, 1);//CMTimeMake(第几帧， 帧率)
+    CMTime startTime = CMTimeMake(Begin, 1);//CMTimeMake(frame position， frame rate)
     
-    CMTime stopTime = CMTimeMake(End, 1);//CMTimeMake(第几帧， 帧率)
+    CMTime stopTime = CMTimeMake(End, 1);//CMTimeMake(frame postion，frame rate )
     
-    CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime);//导出时间范围
+    CMTimeRange exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime);//time range
     
     
     AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]
                                            initWithAsset:avAsset presetName:AVAssetExportPresetAppleM4A];
     
-    exportSession.outputURL = [NSURL fileURLWithPath:filePath]; // output path 新文件路径
+    exportSession.outputURL = [NSURL fileURLWithPath:filePath]; // output path
     
-    exportSession.outputFileType = AVFileTypeAppleM4A; // output file type 新文件类型
+    exportSession.outputFileType = AVFileTypeAppleM4A; // output file type
     
-    exportSession.timeRange = exportTimeRange; // trim time range //剪切时间
+    exportSession.timeRange = exportTimeRange; // trim time range
     
-    // exportSession.audioMix = exportAudioMix; // fade in audio mix //新的混音音频
-    
-    // perform the export  开始真正工作
+    // perform the export
     
     [exportSession exportAsynchronouslyWithCompletionHandler:^
      {
@@ -413,8 +409,7 @@ NSString* timeToString(float ctime)
                  NSLog(@"Export canceled");
                  break;
              default:
-                 // [self addCertainAlertViewWithTitle:LocalizedString(@"AlertViewTitleSysPrompt") Message:@"截取成功"];
-                 NSLog(@"保存成功");
+                 NSLog(@"Success");
          }
      }];
     

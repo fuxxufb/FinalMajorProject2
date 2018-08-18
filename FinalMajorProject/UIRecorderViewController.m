@@ -74,7 +74,6 @@
 {
     self.microphoneStateLabel.text = isPlaying ? @"MicOn" : @"MicOff";
     [self.microphoneStateLabel sizeToFit];
-    //self.microphoneSwitch.on = isPlaying;
 }
 - (void)   microphone:(EZMicrophone *)microphone
      hasAudioReceived:(float **)buffer

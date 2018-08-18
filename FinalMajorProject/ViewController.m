@@ -211,18 +211,18 @@ NSInteger mp3Count;
 #pragma mark - OpenFilePath
 - (void)openFileWithFilePathURL:(NSURL*)filePathURL
 {
-    //self.Name.text=filePathURL.lastPathComponent;
-    self.navigationItem.title=filePathURL.lastPathComponent;
-    self.audioFile=nil;
-    self.audioFile=[EZAudioFile audioFileWithURL:filePathURL];
-    self.During.text=self.audioFile.formattedDuration;
-    self.currentTime.text=@"00:00";
-    self.UIPositionSlider.maximumValue = (float)self.audioFile.totalFrames;
-    //--------------------------
+    self.navigationItem.title=filePathURL.lastPathComponent;//tittle name
+    self.audioFile=nil;//init audiofile
+    self.audioFile=[EZAudioFile audioFileWithURL:filePathURL];//load audio file
+    self.During.text=self.audioFile.formattedDuration;//During Time
+    self.currentTime.text=@"00:00";//init CurrentTime
+    self.UIPositionSlider.maximumValue = (float)self.audioFile.totalFrames;//init Slider length
+    //-------------------------- set Plot Type
     self.audioPlot.plotType = EZPlotTypeBuffer;
     self.audioPlot.shouldFill = YES;
     self.audioPlot.shouldMirror = YES;
     //--------------------------
+    //-------------------------- load Plot in Multi-thread
     __weak typeof (self) weakSelf = self;
     [self.audioFile getWaveformDataWithCompletionBlock:^(float **waveformData,
                                                          int length)
@@ -232,7 +232,6 @@ NSInteger mp3Count;
      }];
     //----------------------------
     [self.player setAudioFile:self.audioFile];
-    //[self.player play];
 }
 
 
@@ -393,29 +392,14 @@ reachedEndOfAudioFile:(EZAudioFile *)audioFile
     {
         [self.player pause];
         [self.UIPlayButton setImage:Pauseimage forState:UIControlStateNormal];
-        [self.UIPlayButton setTitle:@"开始" forState:UIControlStateNormal];
     }
     else if (![self.player isPlaying])
     {
         [self.player play];
         [self.UIPlayButton setImage:Playimage forState:UIControlStateNormal];
-        [self.UIPlayButton setTitle:@"暂停" forState:UIControlStateNormal];
     }
 }
-- (IBAction)UINextButtonClick:(UIButton *)sender {
-    if (self.player.currentTime<self.player.duration-2)
-    {
-        self.player.currentTime++;
-        
-    }
-    
-}
-- (IBAction)UIPreButtonClick:(UIButton *)sender {
-    if (self.player.currentTime>1.5)
-    {
-        self.player.currentTime=self.player.currentTime-2;
-    }
-}
+
 
 - (IBAction)NextAudio:(UIButton *)sender {
     [self PlaynextAudio];
@@ -494,21 +478,16 @@ reachedEndOfAudioFile:(EZAudioFile *)audioFile
     {
         if (mp3Number>0)
         {
-            //[self.player pause];
             mp3Number--;
             [self openFileWithFilePathURL:musicPaths[mp3Number]];
             [self.player setAudioFile:self.audioFile];
             
-            //[self.player play];
-            
         }
         else if (mp3Number<=0)
         {
-            //[self.player pause];
             mp3Number=mp3Count-1;
             [self openFileWithFilePathURL:musicPaths[mp3Number]];
             [self.player setAudioFile:self.audioFile];
-            //[self.player play];
         }
     }
 }

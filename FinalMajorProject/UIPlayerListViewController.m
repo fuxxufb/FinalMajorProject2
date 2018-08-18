@@ -26,7 +26,7 @@ NSString *ipString;
     self.filenameArray=[DefaultInstance sharedInstance].filenameArray;
     //if (self.filenameArray==nil)
     //{
-        self.filenameArray=[[NSMutableArray alloc]init];
+    self.filenameArray=[[NSMutableArray alloc]init];
     //}
     self.filepathArray=[DefaultInstance sharedInstance].filepathArray;
     //if (self.filepathArray==nil)
@@ -49,14 +49,14 @@ NSString *ipString;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     self.navigationController.navigationBar.translucent=true;
-   // [self.tabBarController.tabBar setBackgroundImage:[UIImage new]];
+    // [self.tabBarController.tabBar setBackgroundImage:[UIImage new]];
     //[self.tabBarController.tabBar setShadowImage:[UIImage new]];
     //self.tabBarController.tabBar.translucent=true;
     //-------------------------------------------------
     //---------------------------set statusbar white(plist changed)
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
+    
     
     //----------------------set notificationcenter
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFile) name:@"processEpilogueData" object:nil];
@@ -92,17 +92,17 @@ NSString *ipString;
     //dispatch_async(dispatch_get_main_queue(), ^{
     NSFileManager *fileManager=[NSFileManager defaultManager];//init Filemanager
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];//get Document folder Path
-   // NSLog(@"Path：%@", documentsPath);
+    // NSLog(@"Path：%@", documentsPath);
     NSMutableArray *fArray=[[NSMutableArray alloc]init];//init FileArray
     fArray = [NSMutableArray arrayWithArray:[fileManager contentsOfDirectoryAtPath:documentsPath
-        error:nil]];//Get file name in the Document Path
-   // NSLog(@"%@",self.filenameArray[0]);
+                                                                             error:nil]];//Get file name in the Document Path
+    // NSLog(@"%@",self.filenameArray[0]);
     for (int i=0;i<fArray.count;i++)//traversal array
     {
         NSString *str=[NSString stringWithString:fArray[i]];
         NSString *doc2=[documentsPath stringByAppendingString:@"/"];
         NSString *str2=[doc2 stringByAppendingString:str];//DocumentPath+'/'+filename=fileabsolutePath
-       // NSLog(@"%@",str2);
+        // NSLog(@"%@",str2);
         if ([str2 isAbsolutePath])
         {
             NSURL *url=[NSURL fileURLWithPath:str2];//To URL
@@ -118,7 +118,7 @@ NSString *ipString;
             
         }
     }
-  //  NSLog(@"%@",str);
+    //  NSLog(@"%@",str);
     [DefaultInstance sharedInstance].filenameArray=self.filenameArray;
     [DefaultInstance sharedInstance].filepathArray=self.filepathArray;
     [self.fileTableView reloadData];
@@ -178,7 +178,7 @@ NSString *ipString;
 
 - (IBAction)PushRecorderVC:(UIButton *)sender {
     //ViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"UIRecorderViewController"];
-   // [self presentViewController:VC animated:YES completion:nil];
+    // [self presentViewController:VC animated:YES completion:nil];
 }
 //[[NSNotificationCenter defaultCenter] postNotificationName:@"processEpilogueData" object:nil];
 #pragma mark - <UITableViewDataSource>
@@ -200,15 +200,9 @@ NSString *ipString;
     cell.backgroundColor=[UIColor clearColor];
     cell.textLabel.textColor=[UIColor whiteColor];
     cell.detailTextLabel.textColor=[UIColor whiteColor];
-    //-------------------------------------
-    //AVAudioFile *avFile=[[AVAudioFile alloc]initForReading:self.filepathArray[indexPath.row] error:nil];
+    //set UI of the cells
     EZAudioFile *avFile=[[EZAudioFile alloc]initWithURL:self.filepathArray[indexPath.row]];
-   // AVAudioPlayer *avplayer=[[AVAudioPlayer alloc]initWithContentsOfURL:self.filepathArray[indexPath.row] error:nil];
-    //NSLog([NSString stringWithFormat:@"%@",avFile.formattedDuration]);
-    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",avFile.formattedDuration];
-    
-    
-    //cell.backgroundColor=[UIColor clearColor];
+    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",avFile.formattedDuration];//show the during time in the detail label
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -224,19 +218,14 @@ NSString *ipString;
     return YES;
 }
 
-// 定义编辑样式
+// define edit style
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete;
 }
-
+// define callbacks
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-        
-        [self Deleteitem:indexPath.row];
-          //  NSString *user_no = [self.actor_cpllaboredArray[indexPath.row] valueForKey:@"user_no"];
-           // [self fetch_api_Recruit_withdraw:user_no];
-            
+        [self Deleteitem:indexPath.row];// invoke DeleteItem function
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         if ((self.filepathArray.count==0)&&(self.InformationLabel.hidden==true))
         {
@@ -244,8 +233,7 @@ NSString *ipString;
         }
     }
 }
-
-// 修改编辑按钮文字
+// change edit label content
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"Delete";
 }
