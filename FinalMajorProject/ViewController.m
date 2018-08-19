@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import "MemoryandCPUTest.h"
 @interface ViewController ()
 
 
@@ -30,7 +30,13 @@ NSInteger mp3Count;
 
 - (void)dealloc
 {
+    self.player=nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.MemoryandCUPUSE invalidate];
+    self.MemoryandCUPUSE=nil;
 }
 
 #pragma mark - Status Bar Style
@@ -45,6 +51,7 @@ NSInteger mp3Count;
 #pragma mark - Setup
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.MemoryandCUPUSE = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(ShowMemoryandCUPUSE) userInfo:nil repeats:YES];
     //---------------------------------------
     
     musicNames=[[NSMutableArray alloc]init];
@@ -131,7 +138,7 @@ NSInteger mp3Count;
     self.navigationController.navigationBar.tintColor=[UIColor whiteColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
-   // [self.OrderButton setHidden:true];
+    // [self.OrderButton setHidden:true];
     //[self.LoopButton setHidden:false];
     self.IsLoop=true;
     self.player.shouldLoop=true;
@@ -152,12 +159,14 @@ NSInteger mp3Count;
     else
     {
         [self.player play];
+        [self.UIPlayButton setImage:Pauseimage forState:UIControlStateNormal];
     }
 }
 
+
 -(void)dismissGuideView:(UITapGestureRecognizer*)tap
 {
-   // NSLog(@"errererererer");
+    // NSLog(@"errererererer");
     UIView *view=tap.view;
     [view removeFromSuperview];
     [view removeGestureRecognizer:tap];
@@ -235,12 +244,7 @@ NSInteger mp3Count;
 }
 
 
-
-
-
 #pragma mark - Actions
-
-
 
 - (IBAction)RightSwipe:(UISwipeGestureRecognizer *)sender {
     //self.mp3Array=[[NSBundle mainBundle] pathsForResourcesOfType:@"mp3" inDirectory:@"BGM"];
@@ -288,28 +292,6 @@ NSInteger mp3Count;
         }
     }
 }
-
-
-
-
-
-
-
-/*- (IBAction)selectMusic:(UIButton *)sender {
- self.picker = [[MPMediaPickerController alloc]initWithMediaTypes:MPMediaTypeAnyAudio];
- self.picker.prompt = @"Please select your music";
- self.picker.showsCloudItems = NO;
- self.picker.allowsPickingMultipleItems =YES;
- self.picker.delegate=self;
- [self presentViewController:self.picker animated:YES completion:nil];
- }*/
-
-
-
-
-
-
-
 
 
 
@@ -362,6 +344,7 @@ reachedEndOfAudioFile:(EZAudioFile *)audioFile
     if ([segue.identifier isEqualToString:@"sec"])
     {
         [self.player pause];
+        [self.UIPlayButton setImage:Playimage forState:UIControlStateNormal];
     }
     
 }
@@ -374,8 +357,8 @@ reachedEndOfAudioFile:(EZAudioFile *)audioFile
 
 
 - (IBAction)UIPositionSliderValueChange:(UISlider *)sender {
-   // self.player.currentTime=sender.value*self.player.duration;
-  //  self.currentTime.text=self.player.formattedCurrentTime;
+    // self.player.currentTime=sender.value*self.player.duration;
+    //  self.currentTime.text=self.player.formattedCurrentTime;
     [self.player seekToFrame:(SInt64)[(UISlider *)sender value]];
 }
 - (IBAction)UIVolumeSliderChange:(UISlider *)sender {
@@ -391,12 +374,12 @@ reachedEndOfAudioFile:(EZAudioFile *)audioFile
     if ([self.player isPlaying])
     {
         [self.player pause];
-        [self.UIPlayButton setImage:Pauseimage forState:UIControlStateNormal];
+        [self.UIPlayButton setImage:Playimage forState:UIControlStateNormal];
     }
     else if (![self.player isPlaying])
     {
         [self.player play];
-        [self.UIPlayButton setImage:Playimage forState:UIControlStateNormal];
+        [self.UIPlayButton setImage:Pauseimage forState:UIControlStateNormal];
     }
 }
 
@@ -510,5 +493,12 @@ reachedEndOfAudioFile:(EZAudioFile *)audioFile
     self.IsLoop=false;
     self.player.shouldLoop=self.IsLoop;
 }
+-(void)ShowMemoryandCUPUSE
+{
+    
+    NSLog(@"Memory is: %lu",[MemoryandCPUTest memoryUsage]);
+    NSLog(@"CUP USE is: %%%f",[MemoryandCPUTest cpuUsage]);
+}
+
 @end
 

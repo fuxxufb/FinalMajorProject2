@@ -10,6 +10,7 @@
 #import <EZAudio.h>
 #import "DrawView.h"
 #import <AVFoundation/AVFoundation.h>
+#import "MemoryandCPUTest.h"
 @interface UIRepeatViewController : UIViewController<EZAudioPlayerDelegate,UIGestureRecognizerDelegate,AVAudioPlayerDelegate,UIDocumentInteractionControllerDelegate,UIAlertViewDelegate>
 @property (strong, nonatomic) IBOutlet EZAudioPlot *editAudioPlot;
 @property (strong,nonatomic) EZAudioFile *audioFile;

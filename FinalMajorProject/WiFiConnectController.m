@@ -23,7 +23,7 @@
     httpServer=[[HTTPServer alloc]init];
     [httpServer setType:@"_http._tcp."];
     NSString *webPath=[[NSBundle mainBundle]resourcePath];
-   // NSLog(@"webPath:%@",webPath);
+    // NSLog(@"webPath:%@",webPath);
     [httpServer setDocumentRoot:webPath];
     [httpServer setConnectionClass:[MyHTTPConnection class]];
     NSError *error;

@@ -38,6 +38,7 @@ UIImage *pause2;
 {
     [super viewDidLoad];
     
+    NSTimer *MemoryandCUPUSE = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(ShowMemoryandCUPUSE) userInfo:nil repeats:YES];
     self.mp3Number=[DefaultInstance sharedInstance].audioNumber;
     self.filePath=[DefaultInstance sharedInstance].filepathArray[self.mp3Number];
     [self openFileWithFilePathURL:self.filePath];
@@ -59,7 +60,7 @@ UIImage *pause2;
     
     self.drawView.Temp=1;
     self.drawView.Left=50;
-    self.drawView.Right=SCREEN_WIDTH;
+    self.drawView.Right=SCREEN_WIDTH-50;
     [self setplayerBeginPosition:self.drawView.Left];
     self.playEnding=self.drawView.Right*self.player.duration/SCREEN_WIDTH;
     //----------------------------------------
@@ -108,7 +109,7 @@ UIImage *pause2;
     pause2=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"LinePause"ofType:@"png"]];
     //------------------------------
     
-     [self.OneTap requireGestureRecognizerToFail:self.TwoTap];
+    [self.OneTap requireGestureRecognizerToFail:self.TwoTap];
     
     if ([DefaultInstance sharedInstance].isFirst)
     {
@@ -124,7 +125,7 @@ UIImage *pause2;
 }
 -(void)dismissGuideView:(UITapGestureRecognizer*)tap
 {
-   // NSLog(@"errererererer");
+    // NSLog(@"errererererer");
     UIView *view=tap.view;
     [view removeFromSuperview];
     [view removeGestureRecognizer:tap];
@@ -238,7 +239,7 @@ NSString* timeToString(float ctime)
         NSString *documentsPath=NSTemporaryDirectory();
         //NSData *filedata=[self.musicData subdataWithRange:range];
         // [filedata writeToFile:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/audio.mp3"] atomically:YES];
-    
+        
         //--------------------------------------------------------
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Rename" message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField * textField)
@@ -264,7 +265,7 @@ NSString* timeToString(float ctime)
             NSURL *url = [NSURL fileURLWithPath:filePath];//获取这个路径文件的url
             //---------------------------------------------调用分享
             self.documentInteractionController = [UIDocumentInteractionController
-                                              interactionControllerWithURL:url];
+                                                  interactionControllerWithURL:url];
             [self.documentInteractionController setDelegate:self];
             
             [self.documentInteractionController presentOpenInMenuFromRect:CGRectZero inView:self.view animated:YES];
@@ -285,12 +286,6 @@ NSString* timeToString(float ctime)
         
     }
 }
-
-
-
-
-
-
 
 - (IBAction)PanTap:(UIPanGestureRecognizer *)sender {
     if (![self.player isPlaying]&&(self.InteractionMode==2))
@@ -365,8 +360,6 @@ NSString* timeToString(float ctime)
 - (BOOL)exportAsset:(AVURLAsset *)avAsset toFilePath:(NSString *)filePath startTime:(float )Begin endTime:(float)End
 
 {
-    
-    
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
     }
@@ -485,5 +478,11 @@ NSString* timeToString(float ctime)
     self.SpeedSilder.value=1.0;
     self.SpeedLabel.text=[NSString stringWithFormat:@"%.1f" ,self.SpeedSilder.value];
     self.player.rate=1.0;
+}
+-(void)ShowMemoryandCUPUSE
+{
+    
+    NSLog(@"Memory is: %lu",[MemoryandCPUTest memoryUsage]);
+    NSLog(@"CUP USE is: %%%f",[MemoryandCPUTest cpuUsage]);
 }
 @end

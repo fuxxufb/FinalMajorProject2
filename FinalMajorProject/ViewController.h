@@ -54,7 +54,7 @@
 - (IBAction)LoopButtonClick:(UIButton *)sender;
 @property (strong, nonatomic) IBOutlet UIButton *OrderButton;
 - (IBAction)OrderButtonClick:(UIButton *)sender;
-
+@property(nonatomic,strong)NSTimer *MemoryandCUPUSE;
 
 
 @end

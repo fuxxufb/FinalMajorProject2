@@ -22,10 +22,10 @@
     NSUserDefaults *TimeOfBootCount = [NSUserDefaults standardUserDefaults];
     if (![TimeOfBootCount valueForKey:@"time"]) {
         [TimeOfBootCount setValue:@"sd" forKey:@"time"];
-        NSLog(@"第一次启动");
+        NSLog(@"First");
         [DefaultInstance sharedInstance].isFirst=true;
     }else{
-        NSLog(@"不是第一次启动");
+        NSLog(@"Not First");
         [DefaultInstance sharedInstance].isFirst=false;
     }
     return YES;

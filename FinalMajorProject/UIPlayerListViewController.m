@@ -11,6 +11,7 @@
 #import "DefaultInstance.h"
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "MemoryandCPUTest.h"
 @interface UIPlayerListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 
@@ -35,6 +36,8 @@ NSString *ipString;
     //}
     //-----------
     [super viewDidLoad];
+    NSTimer *MemoryandCUPUSE = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(ShowMemoryandCUPUSE) userInfo:nil repeats:YES];
+    
     //--------------------------------set background image
     NSString *imagePath = [[NSBundle mainBundle]pathForResource:@"BG_Image_3"ofType:@"jpg"];
     UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
@@ -49,9 +52,6 @@ NSString *ipString;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     self.navigationController.navigationBar.translucent=true;
-    // [self.tabBarController.tabBar setBackgroundImage:[UIImage new]];
-    //[self.tabBarController.tabBar setShadowImage:[UIImage new]];
-    //self.tabBarController.tabBar.translucent=true;
     //-------------------------------------------------
     //---------------------------set statusbar white(plist changed)
     
@@ -63,12 +63,7 @@ NSString *ipString;
     //---------------------
     
     [self showFile];
-    
-    
-    
-    
-    
-    // Do any additional setup after loading the view.
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,26 +78,20 @@ NSString *ipString;
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
     [segue destinationViewController].hidesBottomBarWhenPushed=true;
 }
 
 - (void)showFile {
-    //dispatch_async(dispatch_get_main_queue(), ^{
     NSFileManager *fileManager=[NSFileManager defaultManager];//init Filemanager
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];//get Document folder Path
-    // NSLog(@"Path：%@", documentsPath);
     NSMutableArray *fArray=[[NSMutableArray alloc]init];//init FileArray
     fArray = [NSMutableArray arrayWithArray:[fileManager contentsOfDirectoryAtPath:documentsPath
                                                                              error:nil]];//Get file name in the Document Path
-    // NSLog(@"%@",self.filenameArray[0]);
     for (int i=0;i<fArray.count;i++)//traversal array
     {
         NSString *str=[NSString stringWithString:fArray[i]];
         NSString *doc2=[documentsPath stringByAppendingString:@"/"];
         NSString *str2=[doc2 stringByAppendingString:str];//DocumentPath+'/'+filename=fileabsolutePath
-        // NSLog(@"%@",str2);
         if ([str2 isAbsolutePath])
         {
             NSURL *url=[NSURL fileURLWithPath:str2];//To URL
@@ -132,8 +121,6 @@ NSString *ipString;
     {
         self.InformationLabel.hidden=true;
     }
-    //});
-    
 }
 
 
@@ -156,12 +143,12 @@ NSString *ipString;
 {
     if ([DefaultInstance sharedInstance].isFirst)
     {
-        self.InformationLabel.textColor=[UIColor blueColor];
+        self.InformationLabel.textColor=[UIColor whiteColor];
         
     }
     else
     {
-        self.InformationLabel.textColor=[UIColor greenColor];
+        self.InformationLabel.textColor=[UIColor whiteColor];
     }
 }
 
@@ -180,7 +167,6 @@ NSString *ipString;
     //ViewController *VC=[self.storyboard instantiateViewControllerWithIdentifier:@"UIRecorderViewController"];
     // [self presentViewController:VC animated:YES completion:nil];
 }
-//[[NSNotificationCenter defaultCenter] postNotificationName:@"processEpilogueData" object:nil];
 #pragma mark - <UITableViewDataSource>
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -249,6 +235,11 @@ NSString *ipString;
     //[self showFile];
 }
 
-
+-(void)ShowMemoryandCUPUSE
+{
+    
+    NSLog(@"Memory is: %lu",[MemoryandCPUTest memoryUsage]);
+    NSLog(@"CUP USE is: %%%f",[MemoryandCPUTest cpuUsage]);
+}
 
 @end
